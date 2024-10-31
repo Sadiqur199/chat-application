@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = () => {
-  const [id, setId] = useState('');
+  const [id, setId] = useState(''); 
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const auth = getAuth();
 
-  const handleLogin = () => {
-    const user = users.find((user) => user.id === id && user.password === password);
-    
-    if (user) {
-      localStorage.setItem('loggedInUser', JSON.stringify(user));
+  const handleLogin = async () => {
+    try {
+  
+      const userCredential = await signInWithEmailAndPassword(auth, id, password);
+      const user = userCredential.user;
+      // localStorage.setItem('loggedInUser', JSON.stringify({ id: user.email, uid: user.uid }));
       navigate('/chat'); 
-    } else {
-      alert('Invalid ID or Password');
+    } catch (error) {
+      alert(error.message); 
     }
   };
 
@@ -47,16 +49,18 @@ const Login = () => {
 
         <div className="mb-4">
           <input
-            type="text"
-            placeholder="Username"
+            type="email" 
+            placeholder="Email"
             className="bg-green-100 text-green-800 p-3 rounded-full w-full mb-4 placeholder-gray-600"
             onChange={(e) => setId(e.target.value)}
+            value={id}
           />
           <input
             type="password"
             placeholder="Password"
             className="bg-green-100 text-green-800 p-3 rounded-full w-full mb-4 placeholder-gray-600"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
         </div>
 
