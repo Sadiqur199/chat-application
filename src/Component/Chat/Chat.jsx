@@ -42,11 +42,11 @@ const Chat = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
+    <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md md:mt-[200px]">
       <h2 className="text-xl font-bold mb-4">Chat Room</h2>
       <div className="h-64 overflow-y-auto border border-gray-300 mb-4 p-2 rounded">
         {messages.map((msg) => (
-          <div key={msg.id} className={`p-2 border ${msg.uid === auth.currentUser.uid ? 'text-right' : 'text-left'}`}>
+          <div key={msg.id} className={`p-2 shadow-sm ${msg.uid === auth.currentUser.uid ? 'text-right' : 'text-left'}`}>
             <strong className="font-semibold">{msg.username || 'Anonymous'}</strong>: {msg.text}
           </div>
         ))}
